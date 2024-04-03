@@ -22,49 +22,12 @@ let h3Estado = document.querySelector(".estado");
 let tiempoPausado = 0;
 
 iniciarBoton.addEventListener("click", () => {
-  pausarBoton.textContent = "Pausar";
-  let minutosI = verificarEntero.value;
-  let segundosTotales = minutosI * 60;
+  if (tiempoPausado == 0) {
+    pausarBoton.textContent = "Pausar";
+    let minutosI = verificarEntero.value;
+    let segundosTotales = minutosI * 60;
 
-  let intervalo = setInterval(() => {
-    segundosTotales--;
-
-    iniciarBoton.disabled = true;
-
-    let horas = Math.floor(segundosTotales / 3600);
-    let minutos = Math.floor((segundosTotales % 3600) / 60);
-    let segundos = segundosTotales % 60;
-
-    horas = horas < 10 ? "0" + horas : horas;
-    minutos = minutos < 10 ? "0" + minutos : minutos;
-    segundos = segundos < 10 ? "0" + segundos : segundos;
-
-    if (segundosTotales >= 0) {
-      h3Estado.textContent = "Encendido";
-      pTiempoRestante.textContent = `${horas}:${minutos}:${segundos}`;
-    }
-    if (segundosTotales < 0) {
-      clearInterval(intervalo);
-      iniciarBoton.disabled = false;
-      h3Estado.textContent = "Apagado";
-    }
-    pausarBoton.addEventListener("click", () => {
-      clearInterval(intervalo);
-      tiempoPausado = segundosTotales;
-      iniciarBoton.disabled = false;
-      h3Estado.textContent = "Pausado";
-      pausarBoton.textContent = "Detener";
-    });
-  }, 100);
-});
-
-iniciarBoton.addEventListener("click", () => {
-  console.log("Entré a este ");
-  console.log(tiempoPausado);
-  if (tiempoPausado > 0) {
-    segundosTotales = tiempoPausado;
-    tiempoPausado = 0;
-    intervalo = setInterval(() => {
+    let intervalo = setInterval(() => {
       segundosTotales--;
 
       iniciarBoton.disabled = true;
@@ -77,13 +40,57 @@ iniciarBoton.addEventListener("click", () => {
       minutos = minutos < 10 ? "0" + minutos : minutos;
       segundos = segundos < 10 ? "0" + segundos : segundos;
 
-      if (segundosTotales > 0) {
+      if (segundosTotales >= 0) {
+        h3Estado.textContent = "Encendido";
+        pTiempoRestante.textContent = `${horas}:${minutos}:${segundos}`;
+      }
+      if (segundosTotales < 0) {
+        clearInterval(intervalo);
+        iniciarBoton.disabled = false;
+        h3Estado.textContent = "Apagado";
+      }
+      pausarBoton.addEventListener("click", () => {
+        tiempoPausado = segundosTotales;
+        iniciarBoton.disabled = false;
+        h3Estado.textContent = "Pausado";
+        pausarBoton.textContent = "Detener";
+        iniciarBoton.textContent = "Reanudar";
+        clearInterval(intervalo);
+      });
+    }, 100);
+  }
+});
+
+iniciarBoton.addEventListener("click", () => {
+  if (tiempoPausado > 0) {
+    console.log("Entré a este ");
+    console.log(tiempoPausado);
+    segundosTotales = tiempoPausado;
+    tiempoPausado = 0;
+    intervalo = setInterval(() => {
+      iniciarBoton.textContent = "Iniciar";
+      h3Estado.textContent = "Encendido";
+      pausarBoton.textContent = "Pausar";
+      segundosTotales--;
+
+      iniciarBoton.disabled = true;
+
+      let horas = Math.floor(segundosTotales / 3600);
+      let minutos = Math.floor((segundosTotales % 3600) / 60);
+      let segundos = segundosTotales % 60;
+
+      horas = horas < 10 ? "0" + horas : horas;
+      minutos = minutos < 10 ? "0" + minutos : minutos;
+      segundos = segundos < 10 ? "0" + segundos : segundos;
+
+      if (segundosTotales >= 0) {
         pTiempoRestante.textContent = `${horas}:${minutos}:${segundos}`;
       }
 
       if (segundosTotales <= 0) {
         clearInterval(intervalo);
         iniciarBoton.disabled = false;
+        h3Estado.textContent = "Apagado";
       }
       pausarBoton.addEventListener("click", () => {
         clearInterval(intervalo);
