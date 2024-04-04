@@ -119,7 +119,7 @@ body {
 }
 
 .panel-control div:nth-of-type(3) button {
-  width: 40%;
+  width: 50%;
   padding: 5px 0;
   height: max-content;
   font-size: 1rem;
@@ -127,8 +127,10 @@ body {
   border-style: none;
   color: white;
   --duracion-transicion: 0.3s;
+  display: none;
 }
-.panel-control div:nth-of-type(3) button:nth-child(1) {
+.panel-control div:nth-of-type(3) button:nth-child(1),
+.panel-control div:nth-of-type(3) button:nth-child(2) {
   --color-verde: rgba(0, 112, 2, 0.7);
   background: var(--color-verde);
   outline: solid 3px var(--color-verde);
@@ -136,18 +138,26 @@ body {
   transition: background var(--duracion-transicion),
     color var(--duracion-transicion);
 }
-.panel-control div:nth-of-type(3) button:nth-child(1):active {
+.panel-control div:nth-of-type(3) button:nth-child(1) {
+  display: inherit;
+}
+.panel-control div:nth-of-type(3) button:nth-child(1):active,
+.panel-control div:nth-of-type(3) button:nth-child(2):active {
   background: white;
   color: var(--color-verde);
 }
-.panel-control div:nth-of-type(3) button:nth-child(2) {
+.panel-control div:nth-of-type(3) button:nth-child(3),
+.panel-control div:nth-of-type(3) button:nth-child(4) {
   --color-rojo: rgba(255, 0, 0, 0.7);
   background: var(--color-rojo);
   outline: solid 3px var(--color-rojo);
   transition: background var(--duracion-transicion),
     color var(--duracion-transicion);
 }
-.panel-control div:nth-of-type(3) button:nth-child(2):active {
+.panel-control div:nth-of-type(3) button:nth-child(3) {
+  display: inherit;
+}
+.panel-control div:nth-of-type(3) button:nth-child(3):active {
   background: white;
   color: var(--color-rojo);
 }

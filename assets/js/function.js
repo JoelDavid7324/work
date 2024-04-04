@@ -13,24 +13,47 @@ verificarEntero.addEventListener("keydown", (event) => {
     event.preventDefault();
   }
 });
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//------------ funcionalidad de los botones de control -----------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 
+// declaracion de variables con las direcciones de los componentes
 const iniciarBoton = document.querySelector(".iniciarBoton");
+const reanudarBoton = document.querySelector(".reanudarBoton");
 const pausarBoton = document.querySelector(".pausarBoton");
+const detenerBoton = document.querySelector(".detenerBoton");
+
 let pTiempoRestante = document.querySelector(".temporizador--rtiempo");
 let h3Estado = document.querySelector(".estado");
 
+//variable para el tiempo pausado
 let tiempoPausado = 0;
 
+const primerosBotones = () => {
+  iniciarBoton.style.display = "inherit";
+  reanudarBoton.style.display = "none";
+  pausarBoton.style.display = "inherit";
+  detenerBoton.style.display = "none";
+};
+const segundosBotones = () => {
+  iniciarBoton.style.display = "none";
+  reanudarBoton.style.display = "inherit";
+  pausarBoton.style.display = "none";
+  detenerBoton.style.display = "inherit";
+};
+
 iniciarBoton.addEventListener("click", () => {
+  primerosBotones();
   if (tiempoPausado == 0) {
-    pausarBoton.textContent = "Pausar";
     let minutosI = verificarEntero.value;
     let segundosTotales = minutosI * 60;
 
     let intervalo = setInterval(() => {
       segundosTotales--;
-
-      iniciarBoton.disabled = true;
 
       let horas = Math.floor(segundosTotales / 3600);
       let minutos = Math.floor((segundosTotales % 3600) / 60);
@@ -46,34 +69,39 @@ iniciarBoton.addEventListener("click", () => {
       }
       if (segundosTotales < 0) {
         clearInterval(intervalo);
-        iniciarBoton.disabled = false;
         h3Estado.textContent = "Apagado";
+        verificarEntero.value = "";
+        primerosBotones();
       }
       pausarBoton.addEventListener("click", () => {
-        tiempoPausado = segundosTotales;
-        iniciarBoton.disabled = false;
         h3Estado.textContent = "Pausado";
-        pausarBoton.textContent = "Detener";
-        iniciarBoton.textContent = "Reanudar";
+        tiempoPausado = segundosTotales;
+        segundosBotones();
+
         clearInterval(intervalo);
       });
     }, 100);
   }
 });
 
-iniciarBoton.addEventListener("click", () => {
+detenerBoton.addEventListener("click", () => {
+  h3Estado.textContent = "Apagado";
+  tiempoPausado = 0;
+  verificarEntero.value = "";
+  primerosBotones();
+  pTiempoRestante.textContent = "00:00:00";
+});
+
+reanudarBoton.addEventListener("click", () => {
   if (tiempoPausado > 0) {
-    console.log("Entré a este ");
-    console.log(tiempoPausado);
+    iniciarBoton.disabled = true;
     segundosTotales = tiempoPausado;
     tiempoPausado = 0;
     intervalo = setInterval(() => {
-      iniciarBoton.textContent = "Iniciar";
+      primerosBotones();
       h3Estado.textContent = "Encendido";
-      pausarBoton.textContent = "Pausar";
-      segundosTotales--;
 
-      iniciarBoton.disabled = true;
+      segundosTotales--;
 
       let horas = Math.floor(segundosTotales / 3600);
       let minutos = Math.floor((segundosTotales % 3600) / 60);
@@ -87,15 +115,15 @@ iniciarBoton.addEventListener("click", () => {
         pTiempoRestante.textContent = `${horas}:${minutos}:${segundos}`;
       }
 
-      if (segundosTotales <= 0) {
+      if (segundosTotales < 0) {
         clearInterval(intervalo);
         iniciarBoton.disabled = false;
         h3Estado.textContent = "Apagado";
+        verificarEntero.value = "";
       }
       pausarBoton.addEventListener("click", () => {
         clearInterval(intervalo);
         tiempoPausado = segundosTotales;
-        iniciarBoton.disabled = false;
       });
     }, 100);
   }
