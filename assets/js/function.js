@@ -1,6 +1,6 @@
 let verificarEntero = document.querySelector(".tiempo__input");
 
-verificarEntero.addEventListener("touchstart", (event) => {
+verificarEntero.addEventListener("keydown", (event) => {
   const valido =
     (event.key >= "0" && event.key <= "9") ||
     event.key === "Backspace" ||
