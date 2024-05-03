@@ -1,3 +1,32 @@
+//let gateway = `ws://${window.location.hostname}/ws`;
+let gateway;
+let websocket;
+window.addEventListener("load", onload);
+let direction;
+
+function onload(event) {
+  initWebSocket();
+}
+
+function initWebSocket() {
+  console.log("Trying to open a WebSocket connection…");
+  websocket = new WebSocket(gateway);
+  websocket.onopen = onOpen;
+  websocket.onclose = onClose;
+}
+
+function onOpen(event) {
+  console.log("Connection opened");
+}
+
+function onClose(event) {
+  console.log("Connection closed");
+  //document.getElementById("motor-state").innerHTML = "motor stopped";
+  setTimeout(initWebSocket, 2000);
+}
+
+let estado;
+
 let verificarEntero = document.querySelector(".tiempo__input");
 
 verificarEntero.addEventListener("keydown", (event) => {
@@ -199,3 +228,11 @@ sumarBoton.addEventListener("click", () => {
     verificarEntero.value = sum;
   }
 });
+
+let submitForm = () => {
+  let time = segundosTotales;
+
+  let send = time + " & " + estado;
+  console.log(send);
+  websocket.send(send);
+};
